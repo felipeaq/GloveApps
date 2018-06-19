@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
+public class    MainActivity extends AppCompatActivity {
     private int state = 1;
     private long initialTime = 0;
     private Thread t;
