@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         btn_apagar_palavra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                predictedText.setText("");
+                    predictedText.setText("");
 
             }
         });
@@ -132,7 +132,20 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
             }
         });
 
-
+        Button start = findViewById(R.id.start_btn);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                svc.startPredict(MainActivity.this);
+            }
+        });
+        Button stop = findViewById(R.id.stop_btn);
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                svc.stopPredict();
+            }
+        });
     }
 
     @Override
@@ -182,12 +195,19 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     @Override
-    public void appendCharaterToScreen(char character) {
+    public void appendCharaterToScreen(final char character) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                predictedText.setText(predictedText.getText() + "" + character);
+            }
+        });
 
     }
 
     @Override
-    public void closeTheSpeaker()   {
+    public void closeTheSpeaker() {
 
     }
 }

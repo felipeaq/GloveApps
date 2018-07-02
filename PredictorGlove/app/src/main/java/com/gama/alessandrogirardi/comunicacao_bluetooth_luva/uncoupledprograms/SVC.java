@@ -15,10 +15,22 @@ public class SVC {
     private boolean isWorking = false;
     private IPredictScreen predictScreen;
 
-    private boolean isWorking() {
+    public boolean isWorking() {
         return isWorking;
     }
+
     private boolean lockPredict;
+
+    public void lockPredict() {
+        this.lockPredict = true;
+    }
+    public void unlockPredict() {
+        this.lockPredict = false;
+    }
+
+    public boolean isPredictLocked(){
+        return lockPredict;
+    }
 
     private enum Kernel {LINEAR, POLY, RBF, SIGMOID}
 
@@ -78,6 +90,7 @@ public class SVC {
     public void startPredict(IPredictScreen predictScreen) {
         this.predictScreen = predictScreen;
         isWorking = true;
+        lockPredict=false;
         waitTheStablishment();
     }
 
@@ -85,14 +98,6 @@ public class SVC {
         if (isWorking) {
             isWorking = false;
         }
-    }
-
-    public void lockPredict(){
-        lockPredict=true;
-    }
-
-    public void unlockPredict(){
-        lockPredict=true;
     }
 
     private char predict(double[] features) {
@@ -228,208 +233,212 @@ public class SVC {
 
             public void run() {
                 System.out.println("pronto");
-                // TODO arruamar speecher
+                // TODO arruamar speecher]
+                isWorking = true;
                 predictScreen.getReadyToSpeak();
 
                 while (isWorking()) {
-                    if(!lockPredict){
-                    switch (state) {
-                        case 1:
+                    System.out.printf("teste");
+                    if (!lockPredict) {
+                        System.out.println("teste2");
+                        switch (state) {
+                            case 1:
 
-                            double max_variation;
-                            if (GloveSensors.getInstance().getSensor6().getAz().size() > 2) {
-                                // Log.d("state", "" + 1);
-                                System.out.println("Moving...");
-                                table.add(GloveSensors.getInstance().getSensor1().getAx().get(GloveSensors.getInstance().getSensor1().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor1().getAy().get(GloveSensors.getInstance().getSensor1().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor1().getAz().get(GloveSensors.getInstance().getSensor1().getAz().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor2().getAx().get(GloveSensors.getInstance().getSensor2().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor2().getAy().get(GloveSensors.getInstance().getSensor2().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor2().getAz().get(GloveSensors.getInstance().getSensor2().getAz().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor3().getAx().get(GloveSensors.getInstance().getSensor3().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor3().getAy().get(GloveSensors.getInstance().getSensor3().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor3().getAz().get(GloveSensors.getInstance().getSensor3().getAz().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor4().getAx().get(GloveSensors.getInstance().getSensor4().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor4().getAy().get(GloveSensors.getInstance().getSensor4().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor4().getAz().get(GloveSensors.getInstance().getSensor4().getAz().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor5().getAx().get(GloveSensors.getInstance().getSensor5().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor5().getAy().get(GloveSensors.getInstance().getSensor5().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor5().getAz().get(GloveSensors.getInstance().getSensor5().getAz().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor6().getAx().get(GloveSensors.getInstance().getSensor6().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor6().getAy().get(GloveSensors.getInstance().getSensor6().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor6().getAz().get(GloveSensors.getInstance().getSensor6().getAz().size() - 1));
+                                double max_variation;
+                                if (GloveSensors.getInstance().getSensor6().getAz().size() > 2) {
+                                    // Log.d("state", "" + 1);
+                                    System.out.println("Moving...");
+                                    table.add(GloveSensors.getInstance().getSensor1().getAx().get(GloveSensors.getInstance().getSensor1().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor1().getAy().get(GloveSensors.getInstance().getSensor1().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor1().getAz().get(GloveSensors.getInstance().getSensor1().getAz().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor2().getAx().get(GloveSensors.getInstance().getSensor2().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor2().getAy().get(GloveSensors.getInstance().getSensor2().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor2().getAz().get(GloveSensors.getInstance().getSensor2().getAz().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor3().getAx().get(GloveSensors.getInstance().getSensor3().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor3().getAy().get(GloveSensors.getInstance().getSensor3().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor3().getAz().get(GloveSensors.getInstance().getSensor3().getAz().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor4().getAx().get(GloveSensors.getInstance().getSensor4().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor4().getAy().get(GloveSensors.getInstance().getSensor4().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor4().getAz().get(GloveSensors.getInstance().getSensor4().getAz().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor5().getAx().get(GloveSensors.getInstance().getSensor5().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor5().getAy().get(GloveSensors.getInstance().getSensor5().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor5().getAz().get(GloveSensors.getInstance().getSensor5().getAz().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor6().getAx().get(GloveSensors.getInstance().getSensor6().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor6().getAy().get(GloveSensors.getInstance().getSensor6().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor6().getAz().get(GloveSensors.getInstance().getSensor6().getAz().size() - 1));
 
-                                tablePrevious.add(GloveSensors.getInstance().getSensor1().getAx().get(GloveSensors.getInstance().getSensor1().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor1().getAy().get(GloveSensors.getInstance().getSensor1().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor1().getAz().get(GloveSensors.getInstance().getSensor1().getAz().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor2().getAx().get(GloveSensors.getInstance().getSensor2().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor2().getAy().get(GloveSensors.getInstance().getSensor2().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor2().getAz().get(GloveSensors.getInstance().getSensor2().getAz().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor3().getAx().get(GloveSensors.getInstance().getSensor3().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor3().getAy().get(GloveSensors.getInstance().getSensor3().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor3().getAz().get(GloveSensors.getInstance().getSensor3().getAz().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor4().getAx().get(GloveSensors.getInstance().getSensor4().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor4().getAy().get(GloveSensors.getInstance().getSensor4().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor4().getAz().get(GloveSensors.getInstance().getSensor4().getAz().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor5().getAx().get(GloveSensors.getInstance().getSensor5().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor5().getAy().get(GloveSensors.getInstance().getSensor5().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor5().getAz().get(GloveSensors.getInstance().getSensor5().getAz().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor6().getAx().get(GloveSensors.getInstance().getSensor6().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor6().getAy().get(GloveSensors.getInstance().getSensor6().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor6().getAz().get(GloveSensors.getInstance().getSensor6().getAz().size() - 2));
-                                for (int i = 0; i < table.size(); i++) {
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor1().getAx().get(GloveSensors.getInstance().getSensor1().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor1().getAy().get(GloveSensors.getInstance().getSensor1().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor1().getAz().get(GloveSensors.getInstance().getSensor1().getAz().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor2().getAx().get(GloveSensors.getInstance().getSensor2().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor2().getAy().get(GloveSensors.getInstance().getSensor2().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor2().getAz().get(GloveSensors.getInstance().getSensor2().getAz().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor3().getAx().get(GloveSensors.getInstance().getSensor3().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor3().getAy().get(GloveSensors.getInstance().getSensor3().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor3().getAz().get(GloveSensors.getInstance().getSensor3().getAz().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor4().getAx().get(GloveSensors.getInstance().getSensor4().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor4().getAy().get(GloveSensors.getInstance().getSensor4().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor4().getAz().get(GloveSensors.getInstance().getSensor4().getAz().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor5().getAx().get(GloveSensors.getInstance().getSensor5().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor5().getAy().get(GloveSensors.getInstance().getSensor5().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor5().getAz().get(GloveSensors.getInstance().getSensor5().getAz().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor6().getAx().get(GloveSensors.getInstance().getSensor6().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor6().getAy().get(GloveSensors.getInstance().getSensor6().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor6().getAz().get(GloveSensors.getInstance().getSensor6().getAz().size() - 2));
+                                    for (int i = 0; i < table.size(); i++) {
 
-                                    double valorAtual = table.get(i);
-                                    double valorAnterior = tablePrevious.get(i);
-                                    double result = valorAnterior - valorAtual;
-                                    if (result < 0) {
-                                        result *= -1;
-                                    }
-                                    tableDiff.add(result);
-                                }
-
-                                max_variation = Collections.max(tableDiff);
-                            } else {
-                                max_variation = 100;
-                            }
-                            // Log.d("MAX_VARIATION", "" + max_variation);
-                            int estavel = 0;
-                            if (max_variation < 0.2) {
-                                estavel++;
-                            } else {
-                                estavel = 0;
-                            }
-
-                            if (estavel >= 1) {
-                                nextState = 2;
-                            } else {
-                                nextState = 1;
-                            }
-
-                            break;
-                        case 2:
-                            // Log.d("state", "" + 2);
-                            System.out.println("Predicting...");
-                            table.add(GloveSensors.getInstance().getSensor1().getGx().get(GloveSensors.getInstance().getSensor1().getGx().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor1().getGy().get(GloveSensors.getInstance().getSensor1().getGy().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor1().getGz().get(GloveSensors.getInstance().getSensor1().getGz().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor2().getGx().get(GloveSensors.getInstance().getSensor2().getGx().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor2().getGy().get(GloveSensors.getInstance().getSensor2().getGy().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor2().getGz().get(GloveSensors.getInstance().getSensor2().getGz().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor3().getGx().get(GloveSensors.getInstance().getSensor3().getGx().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor3().getGy().get(GloveSensors.getInstance().getSensor3().getGy().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor3().getGz().get(GloveSensors.getInstance().getSensor3().getGz().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor4().getGx().get(GloveSensors.getInstance().getSensor4().getGx().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor4().getGy().get(GloveSensors.getInstance().getSensor4().getGy().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor4().getGz().get(GloveSensors.getInstance().getSensor4().getGz().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor5().getGx().get(GloveSensors.getInstance().getSensor5().getGx().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor5().getGy().get(GloveSensors.getInstance().getSensor5().getGy().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor5().getGz().get(GloveSensors.getInstance().getSensor5().getGz().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor6().getGx().get(GloveSensors.getInstance().getSensor6().getGx().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor6().getGy().get(GloveSensors.getInstance().getSensor6().getGy().size() - 1));
-                            table.add(GloveSensors.getInstance().getSensor6().getGz().get(GloveSensors.getInstance().getSensor6().getGz().size() - 1));
-                            final double[] args = new double[18];
-                            for (int i = 0; i < 18; i++) {
-                                args[i] = table.get(i);
-                            }
-                            char pred = predict(args);
-                            if (pred != (char) 0) {
-                                // System.out.println(waitTheStablishment);
-                                predictScreen.appendCharaterToScreen(pred);
-                                if (pred == ' ') {
-                                    Thread t = new Thread() {
-                                        public void run() {
-                                            predictScreen.speak();
-
+                                        double valorAtual = table.get(i);
+                                        double valorAnterior = tablePrevious.get(i);
+                                        double result = valorAnterior - valorAtual;
+                                        if (result < 0) {
+                                            result *= -1;
                                         }
-                                    };
-                                    t.start();
-
-                                }
-                            }
-                            // TODO descobrir o pq da exceção
-                            nextState = 3;
-                            break;
-                        case 3:
-
-                            double maxVariationAc;
-                            if (GloveSensors.getInstance().getSensor6().getAz().size() > 2) {
-                                // Log.d("state", "" + 3);
-                                System.out.println("Stopped");
-                                table.add(GloveSensors.getInstance().getSensor1().getAx().get(GloveSensors.getInstance().getSensor1().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor1().getAy().get(GloveSensors.getInstance().getSensor1().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor1().getAz().get(GloveSensors.getInstance().getSensor1().getAz().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor2().getAx().get(GloveSensors.getInstance().getSensor2().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor2().getAy().get(GloveSensors.getInstance().getSensor2().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor2().getAz().get(GloveSensors.getInstance().getSensor2().getAz().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor3().getAx().get(GloveSensors.getInstance().getSensor3().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor3().getAy().get(GloveSensors.getInstance().getSensor3().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor3().getAz().get(GloveSensors.getInstance().getSensor3().getAz().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor4().getAx().get(GloveSensors.getInstance().getSensor4().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor4().getAy().get(GloveSensors.getInstance().getSensor4().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor4().getAz().get(GloveSensors.getInstance().getSensor4().getAz().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor5().getAx().get(GloveSensors.getInstance().getSensor5().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor5().getAy().get(GloveSensors.getInstance().getSensor5().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor5().getAz().get(GloveSensors.getInstance().getSensor5().getAz().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor6().getAx().get(GloveSensors.getInstance().getSensor6().getAx().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor6().getAy().get(GloveSensors.getInstance().getSensor6().getAy().size() - 1));
-                                table.add(GloveSensors.getInstance().getSensor6().getAz().get(GloveSensors.getInstance().getSensor6().getAz().size() - 1));
-
-                                tablePrevious.add(GloveSensors.getInstance().getSensor1().getAx().get(GloveSensors.getInstance().getSensor1().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor1().getAy().get(GloveSensors.getInstance().getSensor1().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor1().getAz().get(GloveSensors.getInstance().getSensor1().getAz().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor2().getAx().get(GloveSensors.getInstance().getSensor2().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor2().getAy().get(GloveSensors.getInstance().getSensor2().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor2().getAz().get(GloveSensors.getInstance().getSensor2().getAz().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor3().getAx().get(GloveSensors.getInstance().getSensor3().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor3().getAy().get(GloveSensors.getInstance().getSensor3().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor3().getAz().get(GloveSensors.getInstance().getSensor3().getAz().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor4().getAx().get(GloveSensors.getInstance().getSensor4().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor4().getAy().get(GloveSensors.getInstance().getSensor4().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor4().getAz().get(GloveSensors.getInstance().getSensor4().getAz().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor5().getAx().get(GloveSensors.getInstance().getSensor5().getAx().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor5().getAy().get(GloveSensors.getInstance().getSensor5().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor5().getAz().get(GloveSensors.getInstance().getSensor5().getAz().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor6().getAx().get(GloveSensors.getInstance().getSensor6().getAx().size() - 2));
-                                //////// PRANDO
-
-                                tablePrevious.add(GloveSensors.getInstance().getSensor6().getAy().get(GloveSensors.getInstance().getSensor6().getAy().size() - 2));
-                                tablePrevious.add(GloveSensors.getInstance().getSensor6().getAz().get(GloveSensors.getInstance().getSensor6().getAz().size() - 2));
-                                for (int i = 0; i < table.size(); i++) {
-                                    double valorAtual = table.get(i);
-                                    double valorAnterior = tablePrevious.get(i);
-                                    double result = valorAnterior - valorAtual;
-                                    if (result < 0) {
-                                        result *= -1;
+                                        tableDiff.add(result);
                                     }
-                                    tableDiff.add(result);
+
+                                    max_variation = Collections.max(tableDiff);
+                                } else {
+                                    max_variation = 100;
+                                }
+                                // Log.d("MAX_VARIATION", "" + max_variation);
+                                int estavel = 0;
+                                if (max_variation < 0.2) {
+                                    estavel++;
+                                } else {
+                                    estavel = 0;
                                 }
 
-                                maxVariationAc = Collections.max(tableDiff);
-                            } else {
-                                maxVariationAc = 0;
-                            }
-                            if (maxVariationAc > 1.5) {
-                                nextState = 1;
-                            } else {
+                                if (estavel >= 1) {
+                                    nextState = 2;
+                                } else {
+                                    nextState = 1;
+                                }
+
+                                break;
+                            case 2:
+                                // Log.d("state", "" + 2);
+                                System.out.println("Predicting...");
+                                table.add(GloveSensors.getInstance().getSensor1().getGx().get(GloveSensors.getInstance().getSensor1().getGx().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor1().getGy().get(GloveSensors.getInstance().getSensor1().getGy().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor1().getGz().get(GloveSensors.getInstance().getSensor1().getGz().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor2().getGx().get(GloveSensors.getInstance().getSensor2().getGx().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor2().getGy().get(GloveSensors.getInstance().getSensor2().getGy().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor2().getGz().get(GloveSensors.getInstance().getSensor2().getGz().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor3().getGx().get(GloveSensors.getInstance().getSensor3().getGx().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor3().getGy().get(GloveSensors.getInstance().getSensor3().getGy().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor3().getGz().get(GloveSensors.getInstance().getSensor3().getGz().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor4().getGx().get(GloveSensors.getInstance().getSensor4().getGx().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor4().getGy().get(GloveSensors.getInstance().getSensor4().getGy().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor4().getGz().get(GloveSensors.getInstance().getSensor4().getGz().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor5().getGx().get(GloveSensors.getInstance().getSensor5().getGx().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor5().getGy().get(GloveSensors.getInstance().getSensor5().getGy().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor5().getGz().get(GloveSensors.getInstance().getSensor5().getGz().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor6().getGx().get(GloveSensors.getInstance().getSensor6().getGx().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor6().getGy().get(GloveSensors.getInstance().getSensor6().getGy().size() - 1));
+                                table.add(GloveSensors.getInstance().getSensor6().getGz().get(GloveSensors.getInstance().getSensor6().getGz().size() - 1));
+                                final double[] args = new double[18];
+                                for (int i = 0; i < 18; i++) {
+                                    args[i] = table.get(i);
+                                }
+                                char pred = predict(args);
+                                System.out.println("predicted" + pred);
+                                if (pred != (char) 0) {
+                                    // System.out.println(waitTheStablishment);
+                                    predictScreen.appendCharaterToScreen(pred);
+                                    if (pred == ' ') {
+                                        Thread t = new Thread() {
+                                            public void run() {
+                                                predictScreen.speak();
+
+                                            }
+                                        };
+                                        t.start();
+
+                                    }
+                                }
+                                // TODO descobrir o pq da exceção
                                 nextState = 3;
-                            }
-                            break;
+                                break;
+                            case 3:
+
+                                double maxVariationAc;
+                                if (GloveSensors.getInstance().getSensor6().getAz().size() > 2) {
+                                    // Log.d("state", "" + 3);
+                                    System.out.println("Stopped");
+                                    table.add(GloveSensors.getInstance().getSensor1().getAx().get(GloveSensors.getInstance().getSensor1().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor1().getAy().get(GloveSensors.getInstance().getSensor1().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor1().getAz().get(GloveSensors.getInstance().getSensor1().getAz().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor2().getAx().get(GloveSensors.getInstance().getSensor2().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor2().getAy().get(GloveSensors.getInstance().getSensor2().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor2().getAz().get(GloveSensors.getInstance().getSensor2().getAz().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor3().getAx().get(GloveSensors.getInstance().getSensor3().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor3().getAy().get(GloveSensors.getInstance().getSensor3().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor3().getAz().get(GloveSensors.getInstance().getSensor3().getAz().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor4().getAx().get(GloveSensors.getInstance().getSensor4().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor4().getAy().get(GloveSensors.getInstance().getSensor4().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor4().getAz().get(GloveSensors.getInstance().getSensor4().getAz().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor5().getAx().get(GloveSensors.getInstance().getSensor5().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor5().getAy().get(GloveSensors.getInstance().getSensor5().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor5().getAz().get(GloveSensors.getInstance().getSensor5().getAz().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor6().getAx().get(GloveSensors.getInstance().getSensor6().getAx().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor6().getAy().get(GloveSensors.getInstance().getSensor6().getAy().size() - 1));
+                                    table.add(GloveSensors.getInstance().getSensor6().getAz().get(GloveSensors.getInstance().getSensor6().getAz().size() - 1));
+
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor1().getAx().get(GloveSensors.getInstance().getSensor1().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor1().getAy().get(GloveSensors.getInstance().getSensor1().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor1().getAz().get(GloveSensors.getInstance().getSensor1().getAz().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor2().getAx().get(GloveSensors.getInstance().getSensor2().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor2().getAy().get(GloveSensors.getInstance().getSensor2().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor2().getAz().get(GloveSensors.getInstance().getSensor2().getAz().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor3().getAx().get(GloveSensors.getInstance().getSensor3().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor3().getAy().get(GloveSensors.getInstance().getSensor3().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor3().getAz().get(GloveSensors.getInstance().getSensor3().getAz().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor4().getAx().get(GloveSensors.getInstance().getSensor4().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor4().getAy().get(GloveSensors.getInstance().getSensor4().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor4().getAz().get(GloveSensors.getInstance().getSensor4().getAz().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor5().getAx().get(GloveSensors.getInstance().getSensor5().getAx().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor5().getAy().get(GloveSensors.getInstance().getSensor5().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor5().getAz().get(GloveSensors.getInstance().getSensor5().getAz().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor6().getAx().get(GloveSensors.getInstance().getSensor6().getAx().size() - 2));
+                                    //////// PRANDO
+
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor6().getAy().get(GloveSensors.getInstance().getSensor6().getAy().size() - 2));
+                                    tablePrevious.add(GloveSensors.getInstance().getSensor6().getAz().get(GloveSensors.getInstance().getSensor6().getAz().size() - 2));
+                                    for (int i = 0; i < table.size(); i++) {
+                                        double valorAtual = table.get(i);
+                                        double valorAnterior = tablePrevious.get(i);
+                                        double result = valorAnterior - valorAtual;
+                                        if (result < 0) {
+                                            result *= -1;
+                                        }
+                                        tableDiff.add(result);
+                                    }
+
+                                    maxVariationAc = Collections.max(tableDiff);
+                                } else {
+                                    maxVariationAc = 0;
+                                }
+                                if (maxVariationAc > 1.5) {
+                                    nextState = 1;
+                                } else {
+                                    nextState = 3;
+                                }
+                                break;
+
+                        }
+
+                        state = nextState;
+                        table.clear();
+                        tableDiff.clear();
+                        tablePrevious.clear();
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
                     }
-
-                    state = nextState;
-                    table.clear();
-                    tableDiff.clear();
-                    tablePrevious.clear();
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
                 }
-            }
                 System.out.println("State");
                 // Deallocate the Synthesizer.
                 predictScreen.closeTheSpeaker();

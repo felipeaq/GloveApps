@@ -9,11 +9,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
+import com.gama.alessandrogirardi.comunicacao_bluetooth_luva.bluetooth.BluetoothConnection;
 import com.gama.alessandrogirardi.comunicacao_bluetooth_luva.uncoupled.GloveSensors;
-import com.gama.alessandrogirardi.comunicacao_bluetooth_luva.uncoupled.IPostAppendScreen;
+import com.gama.alessandrogirardi.comunicacao_bluetooth_luva.bluetooth.IPostAppendScreen;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.util.ConcurrentModificationException;
 
 public class GraphActivity extends AppCompatActivity implements IPostAppendScreen {
     private GraphView mGraphx;
@@ -533,7 +536,7 @@ public class GraphActivity extends AppCompatActivity implements IPostAppendScree
         });
 
 
-        GloveSensors.getInstance().putPutDataAppendRunnable(this);
+        BluetoothConnection.getInstance(this).putPutDataAppendRunnable(this);
     }
 
     @Override
@@ -550,10 +553,11 @@ public class GraphActivity extends AppCompatActivity implements IPostAppendScree
 
     @Override
     public void onDestroy() {
-        GloveSensors.getInstance().removeMe(this);
+        BluetoothConnection.getInstance(this).removeMe(this);
         super.onDestroy();
 
     }
+
     @Override
     public void onBackPressed() {
         this.finish();
@@ -564,54 +568,58 @@ public class GraphActivity extends AppCompatActivity implements IPostAppendScree
         return new Runnable() {
             @Override
             public void run() {
-                seriesx1.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getGx().getRealSize(), GloveSensors.getInstance().getSensor1().getGx().lastElement()), true, max_x_points);
-                seriesy1.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getGy().getRealSize(), GloveSensors.getInstance().getSensor1().getGy().lastElement()), true, max_x_points);
-                seriesz1.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getGz().getRealSize(), GloveSensors.getInstance().getSensor1().getGz().lastElement()), true, max_x_points);
+                try {
+                    seriesx1.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getGx().getRealSize(), GloveSensors.getInstance().getSensor1().getGx().lastElement()), true, max_x_points);
+                    seriesy1.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getGy().getRealSize(), GloveSensors.getInstance().getSensor1().getGy().lastElement()), true, max_x_points);
+                    seriesz1.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getGz().getRealSize(), GloveSensors.getInstance().getSensor1().getGz().lastElement()), true, max_x_points);
 
-                seriesx2.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getGx().getRealSize(), GloveSensors.getInstance().getSensor2().getGx().lastElement()), true, max_x_points);
-                seriesy2.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getGy().getRealSize(), GloveSensors.getInstance().getSensor2().getGy().lastElement()), true, max_x_points);
-                seriesz2.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getGz().getRealSize(), GloveSensors.getInstance().getSensor2().getGz().lastElement()), true, max_x_points);
+                    seriesx2.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getGx().getRealSize(), GloveSensors.getInstance().getSensor2().getGx().lastElement()), true, max_x_points);
+                    seriesy2.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getGy().getRealSize(), GloveSensors.getInstance().getSensor2().getGy().lastElement()), true, max_x_points);
+                    seriesz2.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getGz().getRealSize(), GloveSensors.getInstance().getSensor2().getGz().lastElement()), true, max_x_points);
 
-                seriesx3.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getGx().getRealSize(), GloveSensors.getInstance().getSensor3().getGx().lastElement()), true, max_x_points);
-                seriesy3.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getGy().getRealSize(), GloveSensors.getInstance().getSensor3().getGy().lastElement()), true, max_x_points);
-                seriesz3.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getGz().getRealSize(), GloveSensors.getInstance().getSensor3().getGz().lastElement()), true, max_x_points);
+                    seriesx3.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getGx().getRealSize(), GloveSensors.getInstance().getSensor3().getGx().lastElement()), true, max_x_points);
+                    seriesy3.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getGy().getRealSize(), GloveSensors.getInstance().getSensor3().getGy().lastElement()), true, max_x_points);
+                    seriesz3.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getGz().getRealSize(), GloveSensors.getInstance().getSensor3().getGz().lastElement()), true, max_x_points);
 
-                seriesx4.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getGx().getRealSize(), GloveSensors.getInstance().getSensor4().getGx().lastElement()), true, max_x_points);
-                seriesy4.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getGy().getRealSize(), GloveSensors.getInstance().getSensor4().getGy().lastElement()), true, max_x_points);
-                seriesz4.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getGz().getRealSize(), GloveSensors.getInstance().getSensor4().getGz().lastElement()), true, max_x_points);
+                    seriesx4.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getGx().getRealSize(), GloveSensors.getInstance().getSensor4().getGx().lastElement()), true, max_x_points);
+                    seriesy4.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getGy().getRealSize(), GloveSensors.getInstance().getSensor4().getGy().lastElement()), true, max_x_points);
+                    seriesz4.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getGz().getRealSize(), GloveSensors.getInstance().getSensor4().getGz().lastElement()), true, max_x_points);
 
-                seriesx5.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getGx().getRealSize(), GloveSensors.getInstance().getSensor5().getGx().lastElement()), true, max_x_points);
-                seriesy5.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getGy().getRealSize(), GloveSensors.getInstance().getSensor5().getGy().lastElement()), true, max_x_points);
-                seriesz5.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getGz().getRealSize(), GloveSensors.getInstance().getSensor5().getGz().lastElement()), true, max_x_points);
+                    seriesx5.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getGx().getRealSize(), GloveSensors.getInstance().getSensor5().getGx().lastElement()), true, max_x_points);
+                    seriesy5.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getGy().getRealSize(), GloveSensors.getInstance().getSensor5().getGy().lastElement()), true, max_x_points);
+                    seriesz5.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getGz().getRealSize(), GloveSensors.getInstance().getSensor5().getGz().lastElement()), true, max_x_points);
 
-                seriesx6.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getGx().getRealSize(), GloveSensors.getInstance().getSensor6().getGx().lastElement()), true, max_x_points);
-                seriesy6.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getGy().getRealSize(), GloveSensors.getInstance().getSensor6().getGy().lastElement()), true, max_x_points);
-                seriesz6.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getGz().getRealSize(), GloveSensors.getInstance().getSensor6().getGz().lastElement()), true, max_x_points);
+                    seriesx6.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getGx().getRealSize(), GloveSensors.getInstance().getSensor6().getGx().lastElement()), true, max_x_points);
+                    seriesy6.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getGy().getRealSize(), GloveSensors.getInstance().getSensor6().getGy().lastElement()), true, max_x_points);
+                    seriesz6.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getGz().getRealSize(), GloveSensors.getInstance().getSensor6().getGz().lastElement()), true, max_x_points);
 
-                seriesx1_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getAx().getRealSize(), GloveSensors.getInstance().getSensor1().getAx().lastElement()), true, max_x_points);
-                seriesy1_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getAy().getRealSize(), GloveSensors.getInstance().getSensor1().getAy().lastElement()), true, max_x_points);
-                seriesz1_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getAz().getRealSize(), GloveSensors.getInstance().getSensor1().getAz().lastElement()), true, max_x_points);
+                    seriesx1_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getAx().getRealSize(), GloveSensors.getInstance().getSensor1().getAx().lastElement()), true, max_x_points);
+                    seriesy1_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getAy().getRealSize(), GloveSensors.getInstance().getSensor1().getAy().lastElement()), true, max_x_points);
+                    seriesz1_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor1().getAz().getRealSize(), GloveSensors.getInstance().getSensor1().getAz().lastElement()), true, max_x_points);
 
-                seriesx2_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getAx().getRealSize(), GloveSensors.getInstance().getSensor2().getAx().lastElement()), true, max_x_points);
-                seriesy2_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getAy().getRealSize(), GloveSensors.getInstance().getSensor2().getAy().lastElement()), true, max_x_points);
-                seriesz2_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getAz().getRealSize(), GloveSensors.getInstance().getSensor2().getAz().lastElement()), true, max_x_points);
+                    seriesx2_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getAx().getRealSize(), GloveSensors.getInstance().getSensor2().getAx().lastElement()), true, max_x_points);
+                    seriesy2_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getAy().getRealSize(), GloveSensors.getInstance().getSensor2().getAy().lastElement()), true, max_x_points);
+                    seriesz2_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor2().getAz().getRealSize(), GloveSensors.getInstance().getSensor2().getAz().lastElement()), true, max_x_points);
 
-                seriesx3_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getAx().getRealSize(), GloveSensors.getInstance().getSensor3().getAx().lastElement()), true, max_x_points);
-                seriesy3_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getAy().getRealSize(), GloveSensors.getInstance().getSensor3().getAy().lastElement()), true, max_x_points);
-                seriesz3_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getAz().getRealSize(), GloveSensors.getInstance().getSensor3().getAz().lastElement()), true, max_x_points);
+                    seriesx3_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getAx().getRealSize(), GloveSensors.getInstance().getSensor3().getAx().lastElement()), true, max_x_points);
+                    seriesy3_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getAy().getRealSize(), GloveSensors.getInstance().getSensor3().getAy().lastElement()), true, max_x_points);
+                    seriesz3_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor3().getAz().getRealSize(), GloveSensors.getInstance().getSensor3().getAz().lastElement()), true, max_x_points);
 
-                seriesx4_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getAx().getRealSize(), GloveSensors.getInstance().getSensor4().getAx().lastElement()), true, max_x_points);
-                seriesy4_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getAy().getRealSize(), GloveSensors.getInstance().getSensor4().getAy().lastElement()), true, max_x_points);
-                seriesz4_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getAz().getRealSize(), GloveSensors.getInstance().getSensor4().getAz().lastElement()), true, max_x_points);
+                    seriesx4_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getAx().getRealSize(), GloveSensors.getInstance().getSensor4().getAx().lastElement()), true, max_x_points);
+                    seriesy4_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getAy().getRealSize(), GloveSensors.getInstance().getSensor4().getAy().lastElement()), true, max_x_points);
+                    seriesz4_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor4().getAz().getRealSize(), GloveSensors.getInstance().getSensor4().getAz().lastElement()), true, max_x_points);
 
-                seriesx5_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getAx().getRealSize(), GloveSensors.getInstance().getSensor5().getAx().lastElement()), true, max_x_points);
-                seriesy5_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getAy().getRealSize(), GloveSensors.getInstance().getSensor5().getAy().lastElement()), true, max_x_points);
-                seriesz5_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getAz().getRealSize(), GloveSensors.getInstance().getSensor5().getAz().lastElement()), true, max_x_points);
+                    seriesx5_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getAx().getRealSize(), GloveSensors.getInstance().getSensor5().getAx().lastElement()), true, max_x_points);
+                    seriesy5_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getAy().getRealSize(), GloveSensors.getInstance().getSensor5().getAy().lastElement()), true, max_x_points);
+                    seriesz5_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor5().getAz().getRealSize(), GloveSensors.getInstance().getSensor5().getAz().lastElement()), true, max_x_points);
 
-                seriesx6_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getAx().getRealSize(), GloveSensors.getInstance().getSensor6().getAx().lastElement()), true, max_x_points);
-                seriesy6_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getAy().getRealSize(), GloveSensors.getInstance().getSensor6().getAy().lastElement()), true, max_x_points);
-                seriesz6_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getAz().getRealSize(), GloveSensors.getInstance().getSensor6().getAz().lastElement()), true, max_x_points);
+                    seriesx6_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getAx().getRealSize(), GloveSensors.getInstance().getSensor6().getAx().lastElement()), true, max_x_points);
+                    seriesy6_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getAy().getRealSize(), GloveSensors.getInstance().getSensor6().getAy().lastElement()), true, max_x_points);
+                    seriesz6_acc.appendData(new DataPoint(GloveSensors.getInstance().getSensor6().getAz().getRealSize(), GloveSensors.getInstance().getSensor6().getAz().lastElement()), true, max_x_points);
 
+                } catch (ConcurrentModificationException e) {
+                    System.out.println("erro onde tu acha q ta dando: " + e.getMessage());
+                }
             }
         };
     }

@@ -22,7 +22,6 @@ public class GloveSensors {
         return ME;
     }
 
-    private Map<IPostAppendScreen, Runnable> runnablesList = new HashMap<>();
 
     private GloveSensors() {
         setSensor1(new SensorData());
@@ -88,24 +87,6 @@ public class GloveSensors {
         getSensor6().getAy().add(sensor6AY / RESIST);
         getSensor6().getAz().add(sensor6AZ / RESIST);
 
-        executePostThreads();
-    }
-
-    private void executePostThreads() {
-
-        for (IPostAppendScreen p : runnablesList.keySet()) {
-            Runnable r = runnablesList.get(p);
-            if (r != null) r.run();
-        }
-    }
-
-
-    public void putPutDataAppendRunnable(IPostAppendScreen screen) {
-        runnablesList.put(screen, screen.getPostAppendRunnable());
-    }
-
-    public void removeMe(IPostAppendScreen screen){
-        runnablesList.remove(screen);
     }
 
 

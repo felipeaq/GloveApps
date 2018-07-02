@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,7 +27,8 @@ public class BluetoothConnection {
     private OutputStream mmOutputStream;
     private InputStream mmInputStream;
     private BluetoothAdapter mBluetoothAdapter;
-    private int REQUEST_ENABLE_BT = 32848852;
+    private int REQUEST_ENABLE_BT = 3284;
+
     private volatile boolean stopWorker;
     private double toRad = 10430.3783505;
     private double resist = 3276.8;
@@ -70,8 +73,8 @@ public class BluetoothConnection {
         Log.d("BT.closeBT:", "Bluetooth Closed");
     }
 
-    public boolean isConnected(){
-        if(mmSocket==null)
+    public boolean isConnected() {
+        if (mmSocket == null)
             return false;
         return mmSocket.isConnected();
     }
@@ -206,6 +209,7 @@ public class BluetoothConnection {
                                 readNextValue(),
                                 readNextValue());
 
+                        executePostThreads();
 
                     } catch (IOException ex) {
                         stopWorker = true;
@@ -220,6 +224,30 @@ public class BluetoothConnection {
         );
         dataReceiverThread.start();
     }
+
+
+    private Map<IPostAppendScreen, Runnable> runnablesList = new HashMap<>();
+
+    private void executePostThreads() {
+
+        for (IPostAppendScreen p : runnablesList.keySet()) {
+            Runnable r = runnablesList.get(p);
+            if (r == null)
+                return;
+            callingActivity.runOnUiThread(r);
+            System.out.println("graph append");
+        }
+    }
+
+
+    public void putPutDataAppendRunnable(IPostAppendScreen screen) {
+        runnablesList.put(screen, screen.getPostAppendRunnable());
+    }
+
+    public void removeMe(IPostAppendScreen screen) {
+        runnablesList.remove(screen);
+    }
+
 
     public double readNextValue() {
         try {
