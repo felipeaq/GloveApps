@@ -11,7 +11,7 @@ public class PreferencesUtils {
     }
     public int getSavedLocaleCheckboxID(){
         return context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
-                .getInt("locale", Consts.LOCALE_US);
+                .getInt("locale", LocaleConsts.LOCALE_US);
     }
 
     public Locale getArchivedLocale(){
