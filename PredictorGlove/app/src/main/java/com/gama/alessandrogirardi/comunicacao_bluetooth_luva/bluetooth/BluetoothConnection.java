@@ -267,6 +267,16 @@ public class BluetoothConnection {
             return 0;
         }
     }
+
+
+
+
+
+
+
+
+
+
 }
 
 
