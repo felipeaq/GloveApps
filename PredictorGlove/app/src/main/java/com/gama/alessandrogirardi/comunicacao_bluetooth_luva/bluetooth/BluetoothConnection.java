@@ -9,11 +9,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.gama.alessandrogirardi.comunicacao_bluetooth_luva.uncoupled.GloveSensors;
+import com.gama.alessandrogirardi.comunicacao_bluetooth_luva.uncoupledprograms.DataSaveCsv;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -46,7 +48,11 @@ public class BluetoothConnection {
         return ME;
     }
 
-    public void tryToConnect() throws IOException {
+    private String deviceToConnect;
+
+    public void tryToConnect(String s) throws IOException {
+
+        deviceToConnect=s;
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
@@ -57,6 +63,7 @@ public class BluetoothConnection {
             Intent enableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             callingActivity.startActivityForResult(enableBluetooth, REQUEST_ENABLE_BT);
         } else {
+
             findPairedDevices();
         }
 
@@ -96,7 +103,7 @@ public class BluetoothConnection {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
-                if (device.getName().equals("LUVAMOUSE")) {
+                if (device.getName().equals(deviceToConnect)) {
                     mmDevice = device;
                     break;
                 }
@@ -125,9 +132,12 @@ public class BluetoothConnection {
         Log.d("BT.sendAutoBaudCode", "Caractere U Sent");
     }
 
+    DataSaveCsv saveCsv = new DataSaveCsv(40);
+
 
     private void readData() {
 
+        saveCsv.swapAutoSavingGyro(callingActivity);
         stopWorker = false;
 
         Toast.makeText(callingActivity, "Connected", Toast.LENGTH_SHORT).show();
@@ -209,7 +219,10 @@ public class BluetoothConnection {
                                 readNextValue(),
                                 readNextValue());
 
+                        autoAppendValues();
+
                         executePostThreads();
+
 
                     } catch (IOException ex) {
                         stopWorker = true;
@@ -249,7 +262,7 @@ public class BluetoothConnection {
     }
 
 
-    public double readNextValue() {
+    private double readNextValue() {
         try {
             byte[] buffer_low = new byte[1];
             byte[] buffer_high = new byte[1];
@@ -269,15 +282,76 @@ public class BluetoothConnection {
     }
 
 
+    private void  autoAppendValues(){
 
+        final GloveSensors glove = GloveSensors.getInstance();
+        if (saveCsv.getIsAutoSavingGyro()){
 
+            ArrayList<Double> arrGyro = new ArrayList<Double>(){{
+                add(glove.getSensor1().getGx().lastElement());
+                add(glove.getSensor1().getGy().lastElement());
+                add(glove.getSensor1().getGz().lastElement());
+                add(glove.getSensor2().getGx().lastElement());
+                add(glove.getSensor2().getGy().lastElement());
+                add(glove.getSensor2().getGz().lastElement());
+                add(glove.getSensor3().getGx().lastElement());
+                add(glove.getSensor3().getGy().lastElement());
+                add(glove.getSensor3().getGz().lastElement());
+                add(glove.getSensor4().getGx().lastElement());
+                add(glove.getSensor4().getGy().lastElement());
+                add(glove.getSensor4().getGz().lastElement());
+                add(glove.getSensor5().getGx().lastElement());
+                add(glove.getSensor5().getGy().lastElement());
+                add(glove.getSensor5().getGz().lastElement());
+                add(glove.getSensor6().getGx().lastElement());
+                add(glove.getSensor6().getGy().lastElement());
+                add(glove.getSensor6().getGz().lastElement());
 
+            }};
 
+            saveCsv.appendModeGyro(arrGyro,callingActivity);
 
+        }
 
+        if(saveCsv.getIsAutoSavingAcc()){
+            ArrayList<Double> arrAcc = new ArrayList<Double>(){{
+                add(glove.getSensor1().getAx().lastElement());
+                add(glove.getSensor1().getAy().lastElement());
+                add(glove.getSensor1().getAz().lastElement());
+                add(glove.getSensor2().getAx().lastElement());
+                add(glove.getSensor2().getAy().lastElement());
+                add(glove.getSensor2().getAz().lastElement());
+                add(glove.getSensor3().getAx().lastElement());
+                add(glove.getSensor3().getAy().lastElement());
+                add(glove.getSensor3().getAz().lastElement());
+                add(glove.getSensor4().getAx().lastElement());
+                add(glove.getSensor4().getAy().lastElement());
+                add(glove.getSensor4().getAz().lastElement());
+                add(glove.getSensor5().getAx().lastElement());
+                add(glove.getSensor5().getAy().lastElement());
+                add(glove.getSensor5().getAz().lastElement());
+                add(glove.getSensor6().getAx().lastElement());
+                add(glove.getSensor6().getAy().lastElement());
+                add(glove.getSensor6().getAz().lastElement());
 
+            }};
+            saveCsv.appendModeAcc(arrAcc,callingActivity);
 
+        }
+        Log.d("teste", "teta");
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

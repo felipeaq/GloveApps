@@ -38,4 +38,35 @@
             android:text="US" />
 
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="18sp"
+        android:text="Glove:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <RadioGroup
+        android:id="@+id/configs_rg2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="0">
+
+        <RadioButton
+            android:id="@+id/config_rb_LM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LUVAMOUSE" />
+
+        <RadioButton
+            android:id="@+id/config_rb_LG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="LuvaGestos" />
+    </RadioGroup>
 </LinearLayout>

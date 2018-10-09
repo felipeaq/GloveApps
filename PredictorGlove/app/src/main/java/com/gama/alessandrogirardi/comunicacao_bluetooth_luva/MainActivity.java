@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         btn_apagar_palavra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    predictedText.setText("");
+                predictedText.setText("");
 
             }
         });
@@ -111,10 +111,15 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         Button openButton = findViewById(R.id.btn_open);
         openButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                try {
-                    bluetoothConnection.tryToConnect();
-                } catch (IOException ex) {
-                    Log.d("openButtonEX", ex.getMessage());
+
+                if (!PermissionUtils.INSTANCE.validate(MainActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    Toast.makeText(MainActivity.this, "Please, give storage permission",Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        bluetoothConnection.tryToConnect(new PreferencesUtils(MainActivity.this).getSavedGlove());
+                    } catch (IOException ex) {
+                        Log.d("openButtonEX", ex.getMessage());
+                    }
                 }
             }
         });
